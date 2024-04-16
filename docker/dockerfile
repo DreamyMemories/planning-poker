@@ -1,0 +1,34 @@
+FROM node:18 As build
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package.json ./
+COPY --chown=node:node yarn.lock ./
+
+# Don't regenerate lockfile
+RUN yarn --frozen-lockfile 
+
+COPY --chown=node:node . .
+RUN yarn prisma generate
+
+# Run the build command which creates the production bundle
+RUN yarn build
+
+# Set NODE_ENV environment variable
+ENV NODE_ENV production
+
+USER node
+
+###################
+# PRODUCTION
+###################
+
+FROM node:18-bullseye As production
+
+# Copy the bundled code from the build stage to the production image
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/app/client ./client
+
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]FROM node:18-alpine

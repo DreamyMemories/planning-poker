@@ -1,0 +1,17 @@
+{
+  "dockerComposeFile":"docker-compose.yml",
+  "service": "planning-poker-app",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "yzhang.markdown-all-in-one",
+	      "vscodevim.vim",
+	      "mongodb.mongodb-vscode"
+      ]
+    }
+  },
+  "postCreateCommand": "bash ./config/mongo_setup.sh && cd planning-poker-api && yarn prisma generate"
+}
