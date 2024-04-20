@@ -5,28 +5,24 @@ export interface Game {
   gameId: string | null;
   name: string | null;
   average?: string | null;
-  gameStatus?: Status;
+  GameStatus?: Status;
   createdById?: string;
 }
 
 export interface GameResponse {
-  id?: string;
-  gameId: string;
-  name: string;
-  createdById: string;
-  average?: string | null;
-  gameStatus: Status;
+  ID: string;
+  Name: string;
+  ModeratorID: string;
+  Average?: string | null;
+  GameStatus: Status;
 }
 
 export interface GameRequest {
-  gameId: string;
   name: string;
-  createdById: string;
-  gameStatus: Status | null;
 }
 
 export interface GameUpdate {
   gameId: string;
-  gameStatus: Status;
+  GameStatus: Status;
   average?: number;
 }

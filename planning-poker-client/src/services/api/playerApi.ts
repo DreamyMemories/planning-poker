@@ -1,4 +1,6 @@
+import axios from "axios";
 import {
+  PlayerRequest,
   PlayerResponse,
   PlayerUpdate,
   PlayerUpdateMany,
@@ -7,17 +9,24 @@ import {
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export async function initPlayer(
-  playerResponse: PlayerResponse
+  playerResponse: PlayerRequest
 ): Promise<PlayerResponse> {
-  const requestOptionPlayer = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(playerResponse),
-  };
 
-  let playerResult = await fetch(`${baseUrl}player/init`, requestOptionPlayer);
-  let playerObj = await playerResult.json();
-  return playerObj as PlayerResponse;
+  try {
+    const response = await axios.post(
+      `${baseUrl}/player/init`,
+      playerResponse,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    console.log(response.data);
+    return response.data as PlayerResponse;
+  } catch (error) {
+    // Handle errors here, e.g., if the server returns a non-200 response code
+    console.error("Error making POST request:", error);
+    throw error;
+  }
 }
 
 export async function fetchPlayerLobby(

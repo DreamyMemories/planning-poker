@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { GameResponse } from "../../types/game";
-import { Player, PlayerUpdate } from "../../types/player";
+import { PlayerResponse, PlayerUpdate } from "../../types/player";
 import { Status } from "../../types/status";
 import { CardConfig, fibonacciCards } from "./CardConfigs";
 import "./CardPicker.css";
@@ -19,7 +19,7 @@ import hoverCardSound from "../../assets/hover-card.mp3";
 
 interface CardPickerProps {
   game: GameResponse;
-  players: Player[];
+  players: PlayerResponse[];
   currentPlayerId: string;
 }
 export const CardPicker: React.FC<CardPickerProps> = ({
@@ -46,7 +46,7 @@ export const CardPicker: React.FC<CardPickerProps> = ({
     playerId: string,
     card: CardConfig
   ) => {
-    if (game.gameStatus !== Status.FINISHED) {
+    if (game.GameStatus !== Status.FINISHED) {
       cardSound.volume = 0.3;
       cardSound.play();
 
@@ -77,7 +77,7 @@ export const CardPicker: React.FC<CardPickerProps> = ({
   return (
     <Grow in={true} timeout={1000}>
       <div>
-        {game.gameStatus === Status.NOT_STARTED ? (
+        {game.GameStatus === Status.NOT_STARTED ? (
           <Typography variant="h5" sx={{ paddingTop: "20px" }}>
             Session not ready for Voting! Wait for moderator to start..
           </Typography>
@@ -102,7 +102,7 @@ export const CardPicker: React.FC<CardPickerProps> = ({
                         className="CardPicker"
                         variant="outlined"
                         onClick={() =>
-                          playPlayer(game.gameId ?? "", currentPlayerId, card)
+                          playPlayer(game.ID ?? "", currentPlayerId, card)
                         }
                         onMouseEnter={() => playHoverCardSound()}
                         onMouseLeave={() => pauseHoverCardSound()}
@@ -194,7 +194,7 @@ export const CardPicker: React.FC<CardPickerProps> = ({
 };
 
 const getPointerEvent = (game: GameResponse) => {
-  if (game.gameStatus === Status.FINISHED) {
+  if (game.GameStatus === Status.FINISHED) {
     return "none";
   }
   return "inherit";

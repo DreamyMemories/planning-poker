@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Player, PlayerResponse } from "../../../types/player";
+import { PlayerRequest, PlayerResponse } from "../../../types/player";
 import { setPlayer } from "../../../states/PlayerSlice";
 import { useAppDispatch } from "../../../states/store";
 import { initPlayer } from "../../../services/api/playerApi";
@@ -22,7 +22,7 @@ export function CreatePlayerDialog(props: CreatePlayerDialogProps) {
   const { open } = props;
   const [isOpen, setOpen] = useState(false);
   const [playerName, setPlayerName] = useState("");
-  const [playerData, setPlayerData] = useState<Player | undefined>();
+  const [playerData, setPlayerData] = useState<PlayerResponse | undefined>();
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
@@ -31,18 +31,14 @@ export function CreatePlayerDialog(props: CreatePlayerDialogProps) {
 
   const handleSubmit = async () => {
     const gameId = window.location.href.replace(/([^\/]*\/){4}/, "");
-    const playerId = crypto.randomUUID();
 
     try {
-      const playerResponse: PlayerResponse = {
+      const playerResponse: PlayerRequest = {
         name: playerName,
         gameId: gameId,
-        playerId: playerId,
-        socketId: getSocketId()
       };
 
       const initPlayerSettings = await initPlayer(playerResponse);
-
       setPlayerData(initPlayerSettings);
     } catch (ex) {}
 

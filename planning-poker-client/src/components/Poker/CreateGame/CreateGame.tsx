@@ -15,8 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../states/store";
 import { setPlayer } from "../../../states/PlayerSlice";
 import { setGame } from "../../../states/GameSlice";
-import { GameResponse } from "../../../types/game";
-import { PlayerResponse } from "../../../types/player";
+import { GameRequest, GameResponse } from "../../../types/game";
+import { PlayerRequest, PlayerResponse } from "../../../types/player";
 import { Status } from "../../../types/status";
 import "./CreateGame.css";
 import { initGame } from "../../../services/api/gameApi";
@@ -28,8 +28,6 @@ export const CreateGame = () => {
   const [gameName, setGameName] = useState("");
   const [playerName, setPlayerName] = useState("");
   const [hasDefaults, setHasDefaults] = useState({ game: true, name: true });
-  const playerId = crypto.randomUUID();
-  const gameId = crypto.randomUUID();
 
   const [gameData, setGameData] = useState<GameResponse | undefined>();
 
@@ -38,22 +36,18 @@ export const CreateGame = () => {
   const dispatch = useAppDispatch();
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    const gameResponse: GameResponse = {
+    const gameResponse: GameRequest = {
       name: gameName,
-      gameId: gameId,
-      createdById: playerId,
-      gameStatus: Status.NOT_STARTED,
     };
-    const playerResponse: PlayerResponse = {
-      name: playerName,
-      gameId: gameId,
-      playerId: playerId,
-      socketId: getSocketId()
-    };
-
+    
     try {
       const initGameSettings = await initGame(gameResponse);
       setGameData(initGameSettings);
+
+      const playerResponse: PlayerRequest = {
+        name: playerName,
+        gameId: initGameSettings.ID,
+      };
 
       const initPlayerSettings = await initPlayer(playerResponse);
       setPlayerData(initPlayerSettings);
@@ -70,7 +64,7 @@ export const CreateGame = () => {
     if (gameData && playerData) {
       dispatch(setGame(gameData));
       dispatch(setPlayer(playerData));
-      history(`/game/${gameData.gameId}`);
+      history(`/game/${gameData.ID}`);
     }
   }, [gameData, playerData, history]);
 

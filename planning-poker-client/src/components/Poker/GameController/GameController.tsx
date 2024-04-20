@@ -56,7 +56,7 @@ export const GameController: React.FC<GameControllerProps> = ({
     try {
       const gameUpdate: GameUpdate = {
         gameId: gameId,
-        gameStatus: Status.IN_PROGRESS,
+        GameStatus: Status.IN_PROGRESS,
       };
 
       const updateGameStatus = await updateGame(gameUpdate);
@@ -81,7 +81,7 @@ export const GameController: React.FC<GameControllerProps> = ({
 
       const gameUpdate: GameUpdate = {
         gameId: gameId,
-        gameStatus: Status.NOT_STARTED,
+        GameStatus: Status.NOT_STARTED,
         average: 0,
       };
 
@@ -101,15 +101,15 @@ export const GameController: React.FC<GameControllerProps> = ({
       const fetchPlayersData = await fetchPlayerLobby(gameId);
       if (fetchPlayersData) {
         const filteredPlayersData = fetchPlayersData.filter((obj) => {
-          return obj.value && obj.value > 0;
+          return obj.Value && obj.Value > 0;
         });
 
-        const values = filteredPlayersData.map((player) => player.value);
+        const values = filteredPlayersData.map((player) => player.Value);
         const sum = values.reduce((total, value) => total! + value!, 0);
         const average = sum! / filteredPlayersData!.length;
         const gameUpdate: GameUpdate = {
           gameId: gameId,
-          gameStatus: Status.FINISHED,
+          GameStatus: Status.FINISHED,
           average: Math.round(average),
         };
         const updateGameAverage = await updateGame(gameUpdate);
@@ -136,11 +136,11 @@ export const GameController: React.FC<GameControllerProps> = ({
   };
 
   const mainButton =
-    game.gameStatus === Status.NOT_STARTED ? (
+    game.GameStatus === Status.NOT_STARTED ? (
       <div className="GameControllerButtonContainer">
         <div className="GameControllerButton">
           <IconButton
-            onClick={() => startGame(game.gameId ?? "")}
+            onClick={() => startGame(game.ID ?? "")}
             data-testid="start-button"
             color="primary"
           >
@@ -153,7 +153,7 @@ export const GameController: React.FC<GameControllerProps> = ({
       <div className="GameControllerButtonContainer">
         <div className="GameControllerButton">
           <IconButton
-            onClick={() => finishGame(game.gameId)}
+            onClick={() => finishGame(game.ID)}
             data-testid="reveal-button"
             color="primary"
           >
@@ -192,9 +192,9 @@ export const GameController: React.FC<GameControllerProps> = ({
         <GameControllerCard variant="outlined">
           <CardHeader
             align="center"
-            title={setStatus(game.gameStatus)}
+            title={setStatus(game.GameStatus)}
             action={
-              gameFinished(game.gameStatus) && (
+              gameFinished(game.GameStatus) && (
                 <>
                   <div className="GameControllerCardHeaderAverageContainer">
                     <Divider
@@ -209,7 +209,7 @@ export const GameController: React.FC<GameControllerProps> = ({
                       variant="subtitle1"
                       className="GameControllerCardHeaderAverageValue"
                     >
-                      {game.average || "0"}
+                      {game.Average || "0"}
                     </StatusAndAverageTypography>
                   </div>
                 </>
@@ -218,14 +218,14 @@ export const GameController: React.FC<GameControllerProps> = ({
             className="GameControllerCardTitle"
           ></CardHeader>
           <CardContent className="GameControllerCardContentArea">
-            {isModerator(game.createdById ?? "", currentPlayerId) && (
+            {isModerator(game.ModeratorID ?? "", currentPlayerId) && (
               <>
                 {mainButton}
                 <div className="GameControllerButtonContainer">
                   <div className="GameControllerButton">
                     <IconButton
                       data-testid={"restart-button"}
-                      onClick={() => resetGame(game.gameId ?? "")}
+                      onClick={() => resetGame(game.ID ?? "")}
                     >
                       <RefreshIcon fontSize="large" color="error" />
                     </IconButton>

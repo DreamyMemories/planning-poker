@@ -1,10 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"log"
+	"net/http"
 	"os"
 
+	"github.com/DreamyMemories/Planning-Poker/functions"
+	"github.com/DreamyMemories/Planning-Poker/internal/database"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -31,4 +36,18 @@ func main() {
 		log.Fatal(err)
 	}
 	dbQueries := database.New(db)
+	apiConfig := &functions.ApiConfig{DB: dbQueries}
+
+	// Load router
+	mux := functions.Mux(apiConfig)
+	server := &http.Server{
+		Addr:    ":" + port,
+		Handler: mux,
+	}
+
+	log.Println("Server started on port " + port)
+	err = server.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

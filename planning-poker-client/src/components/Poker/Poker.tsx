@@ -1,7 +1,6 @@
 import { CircularProgress, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { GameResponse } from "../../types/game";
-import { Player } from "../../types/player";
 import { GameArea } from "./GameArea/GameArea";
 import "./Poker.css";
 import { CreatePlayerDialog } from "./CreatePlayerDialog/CreatePlayerDialog";
@@ -10,10 +9,11 @@ import { setGame } from "../../states/GameSlice";
 import { useSocketCallback } from "../../services/socketUpdate";
 import { fetchPlayerLobby, removePlayer } from "../../services/api/playerApi";
 import { fetchGameStatus } from "../../services/api/gameApi";
+import { PlayerResponse } from "../../types/player";
 
 export const Poker = () => {
   const [gameData, setGameData] = useState<GameResponse | undefined>();
-  const [playersData, setPlayersData] = useState<Player[] | undefined>();
+  const [playersData, setPlayersData] = useState<PlayerResponse[] | undefined>();
   const [loading, setIsLoading] = useState(false);
 
   const playerDataState = useAppSelector((state) => state.playerState);
@@ -47,7 +47,7 @@ export const Poker = () => {
       dispatch(setGame(gameData));
     }
     fetchLobby();
-  }, []);
+  }, [dispatch, fetchLobby, gameData]);
 
   if (loading) {
     return (
@@ -63,11 +63,11 @@ export const Poker = () => {
 
   return (
     <>
-      {gameData && playersData && playerDataState.player?.playerId ? (
+      {gameData && playersData && playerDataState.player?.ID ? (
         <GameArea
           game={gameData}
           players={playersData}
-          currentPlayerId={playerDataState.player?.playerId}
+          currentPlayerId={playerDataState.player?.ID}
         />
       ) : (
         <CreatePlayerDialog open={true}></CreatePlayerDialog>

@@ -1,20 +1,8 @@
 import { Status } from './status';
 
-export interface Player {
-  name: string;
-  playerId: string;
-  gameId: string;
-  status?: Status 
-  value?: number 
-  emoji?: string;
-}
-
 export interface PlayerRequest {
   name: string;
-  playerId: string;
   gameId: string;
-  value?: number;
-  status?: Status; 
 }
 
 export interface PlayerUpdate {
@@ -28,10 +16,9 @@ export interface PlayerUpdateMany {
 }
 
 export interface PlayerResponse {
-  name: string;
-  playerId: string;
-  gameId: string;
+  Name: string;
+  ID: string;
+  GameID: string;
   socketId?: string;
-  status?: Status 
-  value?: number 
+  Value: number 
 }

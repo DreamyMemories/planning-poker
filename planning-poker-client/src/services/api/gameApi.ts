@@ -1,19 +1,23 @@
-import { GameResponse, GameUpdate } from "../../types/game";
+import axios from "axios";
+import { GameRequest, GameResponse, GameUpdate } from "../../types/game";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export async function initGame(
-  gameResponse: GameResponse
+  gameResponse: GameRequest
 ): Promise<GameResponse> {
-  const requestOptionGame = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(gameResponse),
-  };
-
-  let gameResult = await fetch(`${baseUrl}game/init`, requestOptionGame);
-  let gameObj = await gameResult.json();
-  return gameObj as GameResponse;
+  // let gameResult = await fetch(`${baseUrl}/game/init`, requestOptionGame);
+  try {
+    const response = await axios.post(`${baseUrl}/game/init`, gameResponse, {
+      headers: { "Content-Type": "application/json" }
+    });
+    console.log(response.data)
+    return response.data as GameResponse;
+  } catch (error) {
+    // Handle errors here, e.g., if the server returns a non-200 response code
+    console.error('Error making POST request:', error);
+    throw error;
+  }
 }
 
 export async function updateGame(gameUpdate: GameUpdate): Promise<GameUpdate> {

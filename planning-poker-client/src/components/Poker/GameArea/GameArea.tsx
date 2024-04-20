@@ -1,14 +1,14 @@
 import React from "react";
 import { GameResponse } from "../../../types/game";
-import { Player } from "../../../types/player";
 import { CardPicker } from "../../CardPicker/CardPicker";
 import { Players } from "../../Players/Players";
 import { GameController } from "../GameController/GameController";
 import "./GameArea.css";
+import { PlayerResponse } from "../../../types/player";
 
 interface GameAreaProps {
   game: GameResponse;
-  players: Player[];
+  players: PlayerResponse[];
   currentPlayerId: string;
 }
 export const GameArea: React.FC<GameAreaProps> = ({

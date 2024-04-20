@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Game, GameResponse } from "../../../types/game";
-import { Player } from "../../../types/player";
+import { PlayerResponse } from "../../../types/player";
 import { Status } from "../../../types/status";
 import "./PlayerCard.css";
 import { fibonacciCards } from "../../CardPicker/CardConfigs";
@@ -15,7 +15,7 @@ import { CustomPlayerCard, CustomPlayerCardTitle } from "./PlayerCard.Styles";
 
 interface PlayerCardProps {
   game: GameResponse;
-  player: Player;
+  player: PlayerResponse;
   currentPlayerId: string;
 }
 
@@ -37,7 +37,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
       }}
     >
       <CustomPlayerCardTitle
-        title={player.name}
+        title={player.Name}
         titleTypographyProps={{ variant: "subtitle2", noWrap: true }}
       />
       <CardContent className="PlayerCardContent">
@@ -49,20 +49,20 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   );
 };
 
-const getCardValue = (player: Player, game: GameResponse) => {
-  if (game.gameStatus === Status.IN_PROGRESS) {
-    return player.value && (player.value > 0 || player.value === -1)
+const getCardValue = (player: PlayerResponse, game: GameResponse) => {
+  if (game.GameStatus === Status.IN_PROGRESS) {
+    return player.Value && (player.Value > 0 || player.Value === -1)
       ? "👍"
       : "🤔";
   }
 
-  if (game.gameStatus === Status.FINISHED) {
-    if (player.value === 0) {
+  if (game.GameStatus === Status.FINISHED) {
+    if (player.Value === 0) {
       return "☕"; // coffee emoji
-    } else if (player.value === -1) {
+    } else if (player.Value === -1) {
       return "❓";
     }
-    return getCardDisplayValue(player.value);
+    return getCardDisplayValue(player.Value);
   }
   return "☻";
 };
