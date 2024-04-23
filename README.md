@@ -2,6 +2,8 @@ Planning Poker app previously developed.
 
 TODO:
 - [ ] Rework entire backend to Go
+   - [ ] Implement Fetch Function
+   - [ ] Find a way to broadcast message when value changes
 - [ ] Dark Mode
 
 # Planning poker

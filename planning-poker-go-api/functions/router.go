@@ -27,6 +27,7 @@ func Mux(config *ApiConfig) *mux.Router {
 	mux := mux.NewRouter()
 	mux.Handle("/game/init", corsMiddleware(config.handlerInitGame())).Methods("POST", "OPTIONS")
 	mux.Handle("/player/init", corsMiddleware(config.handlerInitPlayer())).Methods("POST", "OPTIONS")
+	mux.HandleFunc("/ws/{gameId}", gameSocket)
 	return mux
 }
 

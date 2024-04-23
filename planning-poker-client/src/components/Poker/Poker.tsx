@@ -6,7 +6,7 @@ import "./Poker.css";
 import { CreatePlayerDialog } from "./CreatePlayerDialog/CreatePlayerDialog";
 import { useAppDispatch, useAppSelector } from "../../states/store";
 import { setGame } from "../../states/GameSlice";
-import { useSocketCallback } from "../../services/socketUpdate";
+import { useInitiateSocket, useSocketCallback } from "../../services/socketUpdate";
 import { fetchPlayerLobby, removePlayer } from "../../services/api/playerApi";
 import { fetchGameStatus } from "../../services/api/gameApi";
 import { PlayerResponse } from "../../types/player";
@@ -15,18 +15,17 @@ export const Poker = () => {
   const [gameData, setGameData] = useState<GameResponse | undefined>();
   const [playersData, setPlayersData] = useState<PlayerResponse[] | undefined>();
   const [loading, setIsLoading] = useState(false);
+  const websocket = useInitiateSocket();
 
   const playerDataState = useAppSelector((state) => state.playerState);
-
   const dispatch = useAppDispatch();
+
   const fetchLobby = useCallback(async () => {
     try {
       const gameId = window.location.href.replace(/([^\/]*\/){4}/, "");
-
       if (gameId) {
         const fetchPlayersData = await fetchPlayerLobby(gameId);
         setPlayersData(fetchPlayersData);
-
         const fetchGameData = await fetchGameStatus(gameId);
         setGameData(fetchGameData);
       }
@@ -40,13 +39,13 @@ export const Poker = () => {
   }, []);
 
   // Establish socket connection, and send a REST API request to check whether game has started
-  useSocketCallback("join", fetchLobby);
+  useSocketCallback(websocket, "join", fetchLobby);
 
   useEffect(() => {
     if (gameData) {
       dispatch(setGame(gameData));
+      fetchLobby();
     }
-    fetchLobby();
   }, [dispatch, fetchLobby, gameData]);
 
   if (loading) {
@@ -60,7 +59,6 @@ export const Poker = () => {
   if (!gameData && !playersData) {
     return <Typography>Game not found</Typography>;
   }
-
   return (
     <>
       {gameData && playersData && playerDataState.player?.ID ? (

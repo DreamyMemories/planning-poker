@@ -1,44 +1,49 @@
-import { io } from "socket.io-client";
 import React, { useState, useEffect } from "react";
+// Grab game ID from game slice
+import { useAppSelector } from "../states/store";
 
-const socket = io(`${process.env.REACT_APP_BASE_URL}`);
-
-export function getSocketId(): string {
-  return socket.id;
-}
-
-export function useSocketUpdate(updateName: string) {
-  const [updateCount, setUpdateCount] = useState(0);
-
+export function useInitiateSocket() : WebSocket | null {
+  const [ws, setWs] = useState<WebSocket | null>(null);
+  const gameId = useAppSelector((state) => state.gameState.game?.ID);
   useEffect(() => {
-    socket.on(updateName, () => {
-      setUpdateCount((x) => x + 1);
-    });
+    if (!gameId) {
+      return;
+    }
+    const socket = new WebSocket(`${process.env.REACT_APP_BASE_URL}/ws/${gameId}`);
 
-    return () => {
-      socket.off(updateName);
-    };
-  }, [updateName]);
+    socket.onopen = () => {
+      console.log("Socket connected");
+    }
 
-  return updateCount;
+    socket.onerror = (error) => {
+      console.error("Socket error", error);
+    }
+
+    socket.onclose = () => {
+      console.log("Socket closed");
+    }
+
+    setWs(socket);
+  }, [gameId])
+  return ws
 }
 
 export function useSocketCallback(
+  ws: WebSocket | null,
   updateName: string,
   callback: (...args: any[]) => void
 ) {
   useEffect(() => {
-    socket.on(updateName, callback);
+    const handleMessage = (event: MessageEvent) => {
+      const message = JSON.parse(event.data);
+      if (message.type === updateName) {
+        callback();
+      }
+    }
+    ws?.addEventListener("message", handleMessage);
 
     return () => {
-      socket.off(updateName);
+      ws?.removeEventListener("message", handleMessage);
     };
-  }, [callback, updateName]);
-}
-export function useSocketCallbackDisconnect(playerId: string) {
-  useEffect(() => {
-    socket.on("disconnect", () => {
-      socket.emit("disconnectPlayer", playerId);
-    });
-  }, [playerId]);
+  }, [callback, updateName, ws]);
 }

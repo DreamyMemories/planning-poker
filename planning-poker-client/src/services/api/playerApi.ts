@@ -32,11 +32,11 @@ export async function initPlayer(
 export async function fetchPlayerLobby(
   gameId: string
 ): Promise<PlayerResponse[]> {
+
   const requestOptionPlayer = {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   };
-
   let playerResult = await fetch(
     `${baseUrl}player/lobby/${gameId}`,
     requestOptionPlayer

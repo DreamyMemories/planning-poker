@@ -21,7 +21,6 @@ import { Status } from "../../../types/status";
 import "./CreateGame.css";
 import { initGame } from "../../../services/api/gameApi";
 import { initPlayer } from "../../../services/api/playerApi";
-import { getSocketId } from "../../../services/socketUpdate";
 
 export const CreateGame = () => {
   const history = useNavigate();
@@ -43,7 +42,7 @@ export const CreateGame = () => {
     try {
       const initGameSettings = await initGame(gameResponse);
       setGameData(initGameSettings);
-
+      console.log("Setting game data")
       const playerResponse: PlayerRequest = {
         name: playerName,
         gameId: initGameSettings.ID,
@@ -66,7 +65,7 @@ export const CreateGame = () => {
       dispatch(setPlayer(playerData));
       history(`/game/${gameData.ID}`);
     }
-  }, [gameData, playerData, history]);
+  }, [gameData, playerData, history, dispatch]);
 
   const emptyGameName = () => {
     if (hasDefaults.game) {

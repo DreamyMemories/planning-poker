@@ -12,7 +12,6 @@ import { PlayerRequest, PlayerResponse } from "../../../types/player";
 import { setPlayer } from "../../../states/PlayerSlice";
 import { useAppDispatch } from "../../../states/store";
 import { initPlayer } from "../../../services/api/playerApi";
-import { getSocketId } from "../../../services/socketUpdate";
 
 export interface CreatePlayerDialogProps {
   open: boolean;
