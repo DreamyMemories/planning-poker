@@ -7,7 +7,7 @@ import (
 )
 
 func Cleanup(apiConfig *ApiConfig) {
-	ticker := time.NewTicker(1 * time.Minute)
+	ticker := time.NewTicker(24 * time.Hour)
 	go func() {
 		for range ticker.C {
 			fmt.Println("Starting cleanup routine")
@@ -21,7 +21,7 @@ func Cleanup(apiConfig *ApiConfig) {
 			fmt.Println("Found", len(games), "games")
 			for _, game := range games {
 				// If game is older than 1 hour, delete it
-				if time.Since(game.CreatedAt) > 1*time.Minute {
+				if time.Since(game.CreatedAt) > 24*time.Hour {
 					_, err := apiConfig.DB.DeleteGameByID(context.Background(), game.ID)
 					if err != nil {
 						fmt.Println("Error deleting game", err)
@@ -39,7 +39,7 @@ func Cleanup(apiConfig *ApiConfig) {
 			fmt.Println("Found", len(players), "players")
 			for _, player := range players {
 				// If player is older than 1 hour, delete it
-				if time.Since(player.CreatedAt) > 1*time.Minute {
+				if time.Since(player.CreatedAt) > 24*time.Hour {
 					_, err := apiConfig.DB.DeletePlayerByID(context.Background(), player.ID)
 					if err != nil {
 						fmt.Println("Error deleting player", err)
