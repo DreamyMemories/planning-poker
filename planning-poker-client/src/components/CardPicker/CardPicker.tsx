@@ -68,7 +68,7 @@ export const CardPicker: React.FC<CardPickerProps> = ({
 
       const fetchPlayerData = await updatePlayer(playerUpdate);
 
-      return fetchPlayerData.value;
+      return fetchPlayerData.Value;
     }
   };
 

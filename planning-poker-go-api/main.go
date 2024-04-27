@@ -44,7 +44,7 @@ func main() {
 		Addr:    ":" + port,
 		Handler: mux,
 	}
-
+	functions.Cleanup(apiConfig)
 	log.Println("Server started on port " + port)
 	err = server.ListenAndServe()
 	if err != nil {

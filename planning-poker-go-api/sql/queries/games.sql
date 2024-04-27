@@ -9,3 +9,14 @@ RETURNING *;
 
 -- name: GetGameByID :one
 SELECT * FROM games WHERE id = $1;
+
+-- name: UpdateGameStatus :one
+UPDATE games SET game_status = $2, average = $3 WHERE id = $1
+RETURNING *;
+
+-- name: GetAllGamesByCreatedAt :many
+SELECT * FROM games ORDER BY created_at DESC;
+
+-- name: DeleteGameByID :one
+DELETE FROM games WHERE id = $1
+RETURNING *;

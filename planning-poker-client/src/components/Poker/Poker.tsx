@@ -7,7 +7,7 @@ import { CreatePlayerDialog } from "./CreatePlayerDialog/CreatePlayerDialog";
 import { useAppDispatch, useAppSelector } from "../../states/store";
 import { setGame } from "../../states/GameSlice";
 import { useInitiateSocket, useSocketCallback } from "../../services/socketUpdate";
-import { fetchPlayerLobby, removePlayer } from "../../services/api/playerApi";
+import { fetchPlayerLobby } from "../../services/api/playerApi";
 import { fetchGameStatus } from "../../services/api/gameApi";
 import { PlayerResponse } from "../../types/player";
 
@@ -44,9 +44,12 @@ export const Poker = () => {
   useEffect(() => {
     if (gameData) {
       dispatch(setGame(gameData));
-      fetchLobby();
     }
-  }, [dispatch, fetchLobby, gameData]);
+  }, [dispatch, gameData]);
+
+  useEffect(() => {
+    fetchLobby();
+  }, [fetchLobby]);
 
   if (loading) {
     return (

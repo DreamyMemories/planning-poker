@@ -44,12 +44,90 @@ func (q *Queries) CreateGame(ctx context.Context, arg CreateGameParams) (Game, e
 	return i, err
 }
 
+const deleteGameByID = `-- name: DeleteGameByID :one
+DELETE FROM games WHERE id = $1
+RETURNING id, name, average, game_status, moderator_id, created_at
+`
+
+func (q *Queries) DeleteGameByID(ctx context.Context, id uuid.UUID) (Game, error) {
+	row := q.db.QueryRowContext(ctx, deleteGameByID, id)
+	var i Game
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Average,
+		&i.GameStatus,
+		&i.ModeratorID,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const getAllGamesByCreatedAt = `-- name: GetAllGamesByCreatedAt :many
+SELECT id, name, average, game_status, moderator_id, created_at FROM games ORDER BY created_at DESC
+`
+
+func (q *Queries) GetAllGamesByCreatedAt(ctx context.Context) ([]Game, error) {
+	rows, err := q.db.QueryContext(ctx, getAllGamesByCreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Game
+	for rows.Next() {
+		var i Game
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Average,
+			&i.GameStatus,
+			&i.ModeratorID,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getGameByID = `-- name: GetGameByID :one
 SELECT id, name, average, game_status, moderator_id, created_at FROM games WHERE id = $1
 `
 
 func (q *Queries) GetGameByID(ctx context.Context, id uuid.UUID) (Game, error) {
 	row := q.db.QueryRowContext(ctx, getGameByID, id)
+	var i Game
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Average,
+		&i.GameStatus,
+		&i.ModeratorID,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const updateGameStatus = `-- name: UpdateGameStatus :one
+UPDATE games SET game_status = $2, average = $3 WHERE id = $1
+RETURNING id, name, average, game_status, moderator_id, created_at
+`
+
+type UpdateGameStatusParams struct {
+	ID         uuid.UUID
+	GameStatus string
+	Average    int32
+}
+
+func (q *Queries) UpdateGameStatus(ctx context.Context, arg UpdateGameStatusParams) (Game, error) {
+	row := q.db.QueryRowContext(ctx, updateGameStatus, arg.ID, arg.GameStatus, arg.Average)
 	var i Game
 	err := row.Scan(
 		&i.ID,

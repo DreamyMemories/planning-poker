@@ -24,5 +24,5 @@ export interface GameRequest {
 export interface GameUpdate {
   gameId: string;
   GameStatus: Status;
-  average?: number;
+  average: number;
 }

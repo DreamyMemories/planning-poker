@@ -43,12 +43,141 @@ func (q *Queries) CreatePlayer(ctx context.Context, arg CreatePlayerParams) (Pla
 	return i, err
 }
 
-const getPlayerByID = `-- name: GetPlayerByID :one
-SELECT id, name, game_id, value, created_at FROM players WHERE id = $1
+const deletePlayerByID = `-- name: DeletePlayerByID :one
+DELETE FROM players WHERE id = $1
+RETURNING id, name, game_id, value, created_at
 `
 
-func (q *Queries) GetPlayerByID(ctx context.Context, id uuid.UUID) (Player, error) {
-	row := q.db.QueryRowContext(ctx, getPlayerByID, id)
+func (q *Queries) DeletePlayerByID(ctx context.Context, id uuid.UUID) (Player, error) {
+	row := q.db.QueryRowContext(ctx, deletePlayerByID, id)
+	var i Player
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.GameID,
+		&i.Value,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const getAllPlayersByCreatedAt = `-- name: GetAllPlayersByCreatedAt :many
+SELECT id, name, game_id, value, created_at FROM players ORDER BY created_at DESC
+`
+
+func (q *Queries) GetAllPlayersByCreatedAt(ctx context.Context) ([]Player, error) {
+	rows, err := q.db.QueryContext(ctx, getAllPlayersByCreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Player
+	for rows.Next() {
+		var i Player
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.GameID,
+			&i.Value,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getPlayersByGameID = `-- name: GetPlayersByGameID :many
+SELECT id, name, game_id, value, created_at FROM players WHERE game_id = $1
+`
+
+func (q *Queries) GetPlayersByGameID(ctx context.Context, gameID uuid.UUID) ([]Player, error) {
+	rows, err := q.db.QueryContext(ctx, getPlayersByGameID, gameID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Player
+	for rows.Next() {
+		var i Player
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.GameID,
+			&i.Value,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updateAllPlayersValue = `-- name: UpdateAllPlayersValue :many
+UPDATE players SET value = $1 WHERE game_id = $2
+RETURNING id, name, game_id, value, created_at
+`
+
+type UpdateAllPlayersValueParams struct {
+	Value  int32
+	GameID uuid.UUID
+}
+
+func (q *Queries) UpdateAllPlayersValue(ctx context.Context, arg UpdateAllPlayersValueParams) ([]Player, error) {
+	rows, err := q.db.QueryContext(ctx, updateAllPlayersValue, arg.Value, arg.GameID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Player
+	for rows.Next() {
+		var i Player
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.GameID,
+			&i.Value,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updatePlayerValue = `-- name: UpdatePlayerValue :one
+UPDATE players SET value = $1 WHERE id = $2 
+RETURNING id, name, game_id, value, created_at
+`
+
+type UpdatePlayerValueParams struct {
+	Value int32
+	ID    uuid.UUID
+}
+
+func (q *Queries) UpdatePlayerValue(ctx context.Context, arg UpdatePlayerValueParams) (Player, error) {
+	row := q.db.QueryRowContext(ctx, updatePlayerValue, arg.Value, arg.ID)
 	var i Player
 	err := row.Scan(
 		&i.ID,

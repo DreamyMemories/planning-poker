@@ -57,6 +57,7 @@ export const GameController: React.FC<GameControllerProps> = ({
       const gameUpdate: GameUpdate = {
         gameId: gameId,
         GameStatus: Status.IN_PROGRESS,
+        average: 0,
       };
 
       const updateGameStatus = await updateGame(gameUpdate);

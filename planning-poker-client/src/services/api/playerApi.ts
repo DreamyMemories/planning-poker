@@ -20,7 +20,6 @@ export async function initPlayer(
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log(response.data);
     return response.data as PlayerResponse;
   } catch (error) {
     // Handle errors here, e.g., if the server returns a non-200 response code
@@ -32,51 +31,55 @@ export async function initPlayer(
 export async function fetchPlayerLobby(
   gameId: string
 ): Promise<PlayerResponse[]> {
+  try {
+    const response = await axios.get(`${baseUrl}/player/lobby/${gameId}`, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data as PlayerResponse[];
 
-  const requestOptionPlayer = {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  };
-  let playerResult = await fetch(
-    `${baseUrl}player/lobby/${gameId}`,
-    requestOptionPlayer
-  );
-  let gameObj = await playerResult.json();
-  return gameObj as PlayerResponse[];
+  } catch (error) {
+    // Handle errors here, e.g., if the server returns a non-200 response code
+    console.error("Error making GET request:", error);
+    throw error;
+  }
 }
 
 export async function updatePlayer(
   playerUpdate: PlayerUpdate
-): Promise<PlayerUpdate> {
-  const requestOptionGame = {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(playerUpdate),
-  };
-
-  let playerResult = await fetch(
-    `${baseUrl}player/update/${playerUpdate.playerId}`,
-    requestOptionGame
-  );
-  let playerObj = await playerResult.json();
-  return playerObj as PlayerUpdate;
+): Promise<PlayerResponse> {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/player/update/${playerUpdate.playerId}`,
+      playerUpdate,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return response.data as PlayerResponse;
+  } catch (error) {
+    // Handle errors here, e.g., if the server returns a non-200 response code
+    console.error("Error making POST request:", error);
+    throw error;
+  }
 }
 
 export async function updateAllPlayer(
   playerUpdateMany: PlayerUpdateMany
 ): Promise<PlayerUpdateMany> {
-  const requestOptionPlayer = {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(playerUpdateMany),
-  };
-
-  let playerResult = await fetch(
-    `${baseUrl}player/update/all/${playerUpdateMany.gameId}`,
-    requestOptionPlayer
-  );
-  let playerObj = await playerResult.json();
-  return playerObj as PlayerUpdateMany;
+  try {
+    const response = await axios.post(
+      `${baseUrl}/player/update/all/${playerUpdateMany.gameId}`,
+      playerUpdateMany,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return response.data as PlayerUpdateMany;
+  } catch (error) {
+    // Handle errors here, e.g., if the server returns a non-200 response code
+    console.error("Error making POST request:", error);
+    throw error;
+  }
 }
 
 export async function removePlayer(playerId: string) {
