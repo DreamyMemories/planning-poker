@@ -1,13 +1,12 @@
 Planning Poker app previously developed.
 
 TODO:
-- [ ] Rework entire backend to Go
-   - [ ] Implement Fetch Function
-   - [ ] Find a way to broadcast message when value changes
+- [x] Rework entire backend to Go
+   - [x] Implement Fetch Function
+   - [x] Find a way to broadcast message when value changes
 - [ ] Dark Mode
 
 # Planning poker
-![image](./assets/planning-poker-logo.PNG)
 
 ## Technologies :
 
@@ -17,13 +16,8 @@ Planning Poker uses a number of open source projects to work properly:
 
 Planning Poker requires Docker and Dev Containers in order to run.
 
-Install the dependencies for the API
+To use the API, refer to the [API README](planning-poker-go-api/README.md)
 
-```bash
-cd planning-poker-api
-yarn
-yarn start
-```
 Install the dependencies for the Client
 
 ```bash
@@ -49,14 +43,10 @@ While the initial release exhibits the core functionality of a planning poker ap
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
-   [Socket.io]: <https://socket.io>
-   [MongoDB]: <https://www.mongodb.com/>
    [React]: <https://reactjs.org/>
-   [NestJS]: <https://nestjs.com/>
    [node.js]: <http://nodejs.org>
    [Typescript]: <https://www.typescriptlang.org/>
-   [express]: <http://expressjs.com>
    [Redux/Redux Toolkit]: <https://redux.js.org/>
-   [Prisma]: <https://www.prisma.io/>
    [Docker]: <https://www.docker.com/>
+   [Go]: <https://golang.org/>
 
