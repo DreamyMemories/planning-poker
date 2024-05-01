@@ -1,12 +1,14 @@
+import { PaletteMode } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
 // A custom theme for this app
-export const customTheme = {
+export const customTheme = (mode: PaletteMode | undefined) => ({
   typography : {
     "fontFamily": "Jost",
   },
   palette: {
+    mode,
     primary: {
       main: '#75A1DE',
     },
@@ -17,8 +19,8 @@ export const customTheme = {
       main: red.A400,
     },
     background: {
-      default: '#fff',
+      default: mode === 'dark' ? '#121212': '#fff',
     },
   },
-};
-export const theme = createTheme(customTheme);
+});
+export const createCustomTheme = (mode: PaletteMode | undefined) => createTheme(customTheme(mode));

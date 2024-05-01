@@ -5,6 +5,7 @@ TODO:
    - [x] Implement Fetch Function
    - [x] Find a way to broadcast message when value changes
 - [ ] Dark Mode
+- [ ] Fix deployment
 
 # Planning poker
 

@@ -10,17 +10,16 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../states/store";
-import { setPlayer } from "../../../states/PlayerSlice";
-import { setGame } from "../../../states/GameSlice";
-import { GameRequest, GameResponse } from "../../../types/game";
-import { PlayerRequest, PlayerResponse } from "../../../types/player";
-import { Status } from "../../../types/status";
-import "./CreateGame.css";
 import { initGame } from "../../../services/api/gameApi";
 import { initPlayer } from "../../../services/api/playerApi";
+import { setGame } from "../../../states/GameSlice";
+import { setPlayer } from "../../../states/PlayerSlice";
+import { useAppDispatch } from "../../../states/store";
+import { GameRequest, GameResponse } from "../../../types/game";
+import { PlayerRequest, PlayerResponse } from "../../../types/player";
+import "./CreateGame.css";
 
 export const CreateGame = () => {
   const history = useNavigate();
@@ -136,9 +135,9 @@ export const CreateGame = () => {
   );
 };
 
-export const CustomInputLabel = styled(InputLabel)({
-  color: "black",
+export const CustomInputLabel = styled(InputLabel)(({theme}) => ({
+  color: theme.palette.mode === "dark" ? "white" : "black",
   fontSize: "1.2rem",
   paddingBottom: "10px",
   paddingTop: "10px",
-});
+}));
