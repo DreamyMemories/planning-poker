@@ -4,18 +4,20 @@ import {
   Grid,
   Grow,
   Slide,
+  Theme,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useTheme } from "../../ThemeContext";
+import dealingCardSound from "../../assets/dealingcards.mp3";
+import hoverCardSound from "../../assets/hover-card.mp3";
+import pickCardSound from "../../assets/pick-card.mp3";
+import { updatePlayer } from "../../services/api/playerApi";
 import { GameResponse } from "../../types/game";
 import { PlayerResponse, PlayerUpdate } from "../../types/player";
 import { Status } from "../../types/status";
 import { CardConfig, fibonacciCards } from "./CardConfigs";
 import "./CardPicker.css";
-import { updatePlayer } from "../../services/api/playerApi";
-import pickCardSound from "../../assets/pick-card.mp3";
-import dealingCardSound from "../../assets/dealingcards.mp3";
-import hoverCardSound from "../../assets/hover-card.mp3";
 
 interface CardPickerProps {
   game: GameResponse;
@@ -31,7 +33,7 @@ export const CardPicker: React.FC<CardPickerProps> = ({
   const dealCardSound = new Audio(dealingCardSound);
   const hoverCardAudio = new Audio(hoverCardSound);
   const [isSelected, setSelected] = useState(-2);
-
+  const { theme } = useTheme();
   const playHoverCardSound = () => {
     hoverCardAudio.volume = 0.3;
     hoverCardAudio.play();
@@ -44,7 +46,8 @@ export const CardPicker: React.FC<CardPickerProps> = ({
   const playPlayer = async (
     gameId: string,
     playerId: string,
-    card: CardConfig
+    card: CardConfig,
+    theme: Theme
   ) => {
     if (game.GameStatus !== Status.FINISHED) {
       cardSound.volume = 0.3;
@@ -52,7 +55,11 @@ export const CardPicker: React.FC<CardPickerProps> = ({
 
       var cards = document.getElementsByClassName("CardPicker");
       for (var i = 0; i < cards.length; i++) {
-        cards.item(i)?.setAttribute("style", "background-color: white");
+        if (theme.palette.mode === "dark") {
+          cards.item(i)?.setAttribute("style", "background-color: black");
+        } else {
+          cards.item(i)?.setAttribute("style", "background-color: white");
+        }
       }
 
       document
@@ -102,12 +109,12 @@ export const CardPicker: React.FC<CardPickerProps> = ({
                         className="CardPicker"
                         variant="outlined"
                         onClick={() =>
-                          playPlayer(game.ID ?? "", currentPlayerId, card)
+                          playPlayer(game.ID ?? "", currentPlayerId, card, theme)
                         }
                         onMouseEnter={() => playHoverCardSound()}
                         onMouseLeave={() => pauseHoverCardSound()}
                         sx={{
-                          background: "white",
+                          background: theme.palette.mode === "dark" ? "black" : "white",
                           border: "2px solid red",
                           pointerEvents: getPointerEvent(game),
                           ":hover": {

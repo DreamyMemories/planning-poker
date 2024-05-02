@@ -1,10 +1,12 @@
 import React from "react";
+import { useTheme } from "../../../ThemeContext";
 import { GameResponse } from "../../../types/game";
+import { PlayerResponse } from "../../../types/player";
 import { CardPicker } from "../../CardPicker/CardPicker";
+import { MaterialUISwitch } from "../../DarkModeButton";
 import { Players } from "../../Players/Players";
 import { GameController } from "../GameController/GameController";
 import "./GameArea.css";
-import { PlayerResponse } from "../../../types/player";
 
 interface GameAreaProps {
   game: GameResponse;
@@ -16,8 +18,12 @@ export const GameArea: React.FC<GameAreaProps> = ({
   players,
   currentPlayerId,
 }) => {
+  const {theme, toggleTheme } = useTheme();
   return (
     <>
+      <div className="Header">
+        <MaterialUISwitch sx={{float: "right"}} checked={theme.palette.mode === "dark"} onClick={toggleTheme} />
+      </div>
       <div className="ContentArea">
         <Players
           game={game}

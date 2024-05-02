@@ -1,3 +1,8 @@
+import { PlayArrow } from "@mui/icons-material";
+import RefreshIcon from "@mui/icons-material/Autorenew";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import LinkIcon from "@mui/icons-material/Link";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Alert,
   Card,
@@ -10,23 +15,19 @@ import {
   Typography,
 } from "@mui/material";
 import { blue, green, orange } from "@mui/material/colors";
-import RefreshIcon from "@mui/icons-material/Autorenew";
-import ExitToApp from "@mui/icons-material/ExitToApp";
-import LinkIcon from "@mui/icons-material/Link";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { styled } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameResponse, GameUpdate } from "../../../types/game";
-import "./GameController.css";
-import { styled } from "@mui/system";
-import { Status } from "../../../types/status";
-import { PlayArrow } from "@mui/icons-material";
-import { PlayerUpdateMany } from "../../../types/player";
+import { useTheme } from "../../../ThemeContext";
 import { updateGame } from "../../../services/api/gameApi";
 import {
   fetchPlayerLobby,
   updateAllPlayer,
 } from "../../../services/api/playerApi";
+import { GameResponse, GameUpdate } from "../../../types/game";
+import { PlayerUpdateMany } from "../../../types/player";
+import { Status } from "../../../types/status";
+import "./GameController.css";
 
 interface GameControllerProps {
   game: GameResponse;
@@ -40,6 +41,7 @@ export const GameController: React.FC<GameControllerProps> = ({
   const history = useNavigate();
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
   const [gameData, setGameData] = useState<GameUpdate | undefined>();
+  const { theme } = useTheme();
 
   const copyInviteLink = () => {
     const dummy = document.createElement("input");
@@ -279,8 +281,8 @@ const StatusAndAverageTypography = styled(Typography)({
   fontSize: "1.25rem",
 });
 
-const GameControllerCard = styled(Card)({
+const GameControllerCard = styled(Card)(({theme}) => ({
   borderRadius: "10px",
   borderWidth: "5px",
-  borderColor: "black",
-});
+  borderColor: theme.palette.mode === "dark" ? "white" : "black",
+}));

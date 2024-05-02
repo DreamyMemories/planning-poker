@@ -32,7 +32,6 @@
 .CardContentSelected {
   position: relative; 
   overflow: hidden;
-  color: white;
   z-index: 1;
   left: -5px;
   top: -5px;

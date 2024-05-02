@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Card, CardHeader } from "@mui/material";
 
 export const CustomPlayerCard = styled(Card)({
     maxWidth: "120px",
@@ -18,7 +18,6 @@ export const CustomPlayerCardTitle = styled(CardHeader)({
     textAlign: "center",
     borderRadius: "16px",
     border: "2px solid red",
-    backgroundColor: "white",
     margin: "-20px auto 0",
     width: "88%",
     padding: "16px",

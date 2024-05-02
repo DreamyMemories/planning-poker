@@ -1,17 +1,15 @@
 import {
-  Card,
   CardContent,
-  CardHeader,
-  IconButton,
-  Typography,
+  Typography
 } from "@mui/material";
 import React from "react";
-import { Game, GameResponse } from "../../../types/game";
+import { useTheme } from "../../../ThemeContext";
+import { GameResponse } from "../../../types/game";
 import { PlayerResponse } from "../../../types/player";
 import { Status } from "../../../types/status";
-import "./PlayerCard.css";
 import { fibonacciCards } from "../../CardPicker/CardConfigs";
 import { CustomPlayerCard, CustomPlayerCardTitle } from "./PlayerCard.Styles";
+import "./PlayerCard.css";
 
 interface PlayerCardProps {
   game: GameResponse;
@@ -27,18 +25,24 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   const isModerator = (moderatorId: string, currentPlayerId: string) => {
     return moderatorId === currentPlayerId;
   };
+  const {theme} = useTheme();
   return (
     <CustomPlayerCard
       variant="outlined"
       className="PlayerCard"
       sx={{
-        backgroundColor: "white",
+        backgroundColor: theme.palette.mode === "dark" ? "black" : "white",
         border: "solid 2px red",
       }}
     >
       <CustomPlayerCardTitle
         title={player.Name}
-        titleTypographyProps={{ variant: "subtitle2", noWrap: true }}
+        titleTypographyProps={{ 
+          variant: "subtitle2", 
+          noWrap: true, 
+          color: theme.palette.mode === "dark" ? "white" : "black",
+      }}
+      sx={{backgroundColor: theme.palette.mode === "dark" ? "black" : "white"}}
       />
       <CardContent className="PlayerCardContent">
         <Typography variant="h2" className="PlayerCardContentMiddle">
@@ -64,7 +68,7 @@ const getCardValue = (player: PlayerResponse, game: GameResponse) => {
     }
     return getCardDisplayValue(player.Value);
   }
-  return "☻";
+  return "😊";
 };
 
 const getCardDisplayValue = (
