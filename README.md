@@ -1,13 +1,19 @@
-Planning Poker app previously developed.
-
-TODO:
-
-
 # Planning poker
 
 ## Technologies :
 
-Planning Poker uses a number of open source projects to work properly:
+Planning Poker is an application that is used during the planning phase of a project to estimate the complexity of a task. It is a fun and interactive way to get the team involved in the planning process. This application is built using the following technologies:
+
+- [React] - A JavaScript library for building user interfaces
+- [Typescript] - A superset of JavaScript that adds static types to the language
+- [Redux/Redux Toolkit] - A state management library for JavaScript applications
+- [Go] - API built using Go
+- [Postgres] - Database used to store user and game information
+
+Example of the application:
+
+![In progress](./images/inprogress.png)
+![End of game](./images/finished.png)
 
 ## Installation
 
@@ -36,19 +42,11 @@ For production deployment, all you have to do is run the GitHub WorkFlow, it wil
 While the initial release exhibits the core functionality of a planning poker application, there are some features that are yet to be added. These include, but are not limited to:
 
 - [x] Delete user and game after a day of inactivity
-- [] Fallback moderator (if moderator disconnects, second person to join will be assigned moderator role for game to continue)
+- [x] Fallback moderator (if moderator disconnects, second person to join will be assigned moderator role for game to continue)
 - [x] Rework entire backend to Go
    - [x] Implement Fetch Function
    - [x] Find a way to broadcast message when value changes
-- [ ] Dark Mode (Currently working but need to apply to all the pages)
-- [ ] Fix deployment
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-
-   [React]: <https://reactjs.org/>
-   [node.js]: <http://nodejs.org>
-   [Typescript]: <https://www.typescriptlang.org/>
-   [Redux/Redux Toolkit]: <https://redux.js.org/>
-   [Docker]: <https://www.docker.com/>
-   [Go]: <https://golang.org/>
-
+- [x] Dark Mode (Currently working but need to apply to all the pages)
+- [ ] Fix deployment and find a way to deploy to google lcoud
+- [ ] Jest Testing (Try)
+- [ ] Go API Testing?
