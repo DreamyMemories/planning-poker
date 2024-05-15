@@ -34,6 +34,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         backgroundColor: theme.palette.mode === "dark" ? "black" : "white",
         border: "solid 2px red",
       }}
+      data-testid="player-card"
     >
       <CustomPlayerCardTitle
         title={player.Name}
