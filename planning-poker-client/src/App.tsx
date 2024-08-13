@@ -1,10 +1,9 @@
-
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { CustomThemeProvider, useTheme } from './ThemeContext';
-import { GamePage } from './pages/GamePage/GamePage';
-import HomePage from './pages/HomePage/HomePage';
-import JoinPage from './pages/JoinPage/JoinPage';
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { CustomThemeProvider, useTheme } from "./ThemeContext";
+import { GamePage } from "./pages/GamePage/GamePage";
+import HomePage from "./pages/HomePage/HomePage";
+import JoinPage from "./pages/JoinPage/JoinPage";
 
 function App() {
   return (
@@ -21,9 +20,9 @@ function AppInner() {
       <CssBaseline />
       <Router>
         <Routes>
-          <Route path='/game/:id' element={<GamePage />} />
-          <Route path='/join/:id' element={<JoinPage />} />
-          <Route path='/*' element={<HomePage />} />
+          <Route path="/game/:id" element={<GamePage />} />
+          <Route path="/join/:id" element={<JoinPage />} />
+          <Route path="/*" element={<HomePage />} />
         </Routes>
       </Router>
     </ThemeProvider>

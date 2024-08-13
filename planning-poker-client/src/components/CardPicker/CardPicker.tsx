@@ -24,6 +24,7 @@ interface CardPickerProps {
   players: PlayerResponse[];
   currentPlayerId: string;
 }
+
 export const CardPicker: React.FC<CardPickerProps> = ({
   game,
   players,
@@ -109,12 +110,18 @@ export const CardPicker: React.FC<CardPickerProps> = ({
                         className="CardPicker"
                         variant="outlined"
                         onClick={() =>
-                          playPlayer(game.ID ?? "", currentPlayerId, card, theme)
+                          playPlayer(
+                            game.ID ?? "",
+                            currentPlayerId,
+                            card,
+                            theme
+                          )
                         }
                         onMouseEnter={() => playHoverCardSound()}
                         onMouseLeave={() => pauseHoverCardSound()}
                         sx={{
-                          background: theme.palette.mode === "dark" ? "black" : "white",
+                          background:
+                            theme.palette.mode === "dark" ? "black" : "white",
                           border: "2px solid red",
                           pointerEvents: getPointerEvent(game),
                           ":hover": {

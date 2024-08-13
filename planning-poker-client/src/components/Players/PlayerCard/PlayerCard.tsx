@@ -1,7 +1,4 @@
-import {
-  CardContent,
-  Typography
-} from "@mui/material";
+import { CardContent, Typography } from "@mui/material";
 import React from "react";
 import { useTheme } from "../../../ThemeContext";
 import { GameResponse } from "../../../types/game";
@@ -25,7 +22,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   const isModerator = (moderatorId: string, currentPlayerId: string) => {
     return moderatorId === currentPlayerId;
   };
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   return (
     <CustomPlayerCard
       variant="outlined"
@@ -38,12 +35,14 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
     >
       <CustomPlayerCardTitle
         title={player.Name}
-        titleTypographyProps={{ 
-          variant: "subtitle2", 
-          noWrap: true, 
+        titleTypographyProps={{
+          variant: "subtitle2",
+          noWrap: true,
           color: theme.palette.mode === "dark" ? "white" : "black",
-      }}
-      sx={{backgroundColor: theme.palette.mode === "dark" ? "black" : "white"}}
+        }}
+        sx={{
+          backgroundColor: theme.palette.mode === "dark" ? "black" : "white",
+        }}
       />
       <CardContent className="PlayerCardContent">
         <Typography variant="h2" className="PlayerCardContentMiddle">

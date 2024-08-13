@@ -44,4 +44,39 @@ describe("Players Component", () => {
     });
   });
 
+  it ("should show a thumbs up emoji if the game is in progress and the player has a value", async () => {
+    const mockGameInProgress = {
+      ...mockGame,
+      GameStatus: Status.IN_PROGRESS,
+    };
+    render(
+      <CustomThemeProvider>
+        <Players players={mockPlayer} game={mockGameInProgress} currentPlayerId="1" />
+      </CustomThemeProvider>
+    );
+
+    const thumbsUpElement = screen.getAllByText("👍");
+    expect(thumbsUpElement.length).toBe(mockPlayer.length);
+  })
+
+  it("should show a thinking emoji if the game is in progress and the player has no value", async () => {
+    const mockPlayerNoValue = [
+      {
+        GameID: "1",
+        ID: "1",
+        Name: "Player 1",
+        Value: 0,
+      },
+    ];
+    const mockGameInProgress = {
+      ...mockGame,
+      GameStatus: Status.IN_PROGRESS,
+    };
+    render(
+      <CustomThemeProvider>
+        <Players players={mockPlayerNoValue} game={mockGameInProgress} currentPlayerId="1" />
+      </CustomThemeProvider>
+    );
+    expect(screen.getByText("🤔")).toBeInTheDocument();
+  });
 });
